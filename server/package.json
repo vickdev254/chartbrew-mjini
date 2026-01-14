@@ -16,8 +16,8 @@
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "db:migrate": "cd models && npx sequelize-cli db:migrate",
-    "precommit": "lint-staged",
-    "postinstall": "npx --yes playwright install chromium --with-deps"
+    "precommit": "lint-staged",   
+    "postinstall": "node scripts/install-playwright.js || true"
   },
   "author": {
     "email": "hello@chartbrew.com",
