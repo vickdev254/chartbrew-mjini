@@ -9,8 +9,29 @@ function generateAESKey() {
   return crypto.randomBytes(32).toString("hex");
 }
 
+// Check if we're in a production/CI environment where .env files aren't used
+function isProductionOrCI() {
+  return process.env.NODE_ENV === "production"
+    || process.env.CI === "true"
+    || process.env.RENDER === "true"
+    || process.env.RENDER_EXTERNAL_URL
+    || process.env.RENDER_SERVICE_NAME;
+}
+
 // Read the .env file, update the CB_ENCRYPTION_KEY variable, or add it if it doesn't exist
 async function updateKeys(envVar) {
+  // In production/CI, environment variables are set directly, not via .env file
+  if (isProductionOrCI()) {
+    // Just verify the environment variable exists
+    if (!process.env[envVar]) {
+      console.warn(`Warning: ${envVar} is not set in environment variables. Please set it in your deployment platform (e.g., Render dashboard).`); // eslint-disable-line
+    } else {
+      console.log(`✓ ${envVar} is set in environment variables`); // eslint-disable-line
+    }
+    return;
+  }
+
+  // In development, use .env file
   try {
     const data = await fs.readFile(envPath, "utf8");
 
