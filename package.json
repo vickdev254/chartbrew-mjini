@@ -10,7 +10,7 @@
     "prepareSettings": "echo n | cp -vipr .env-template .env | true && cd client && echo n | cp -vipr src/config/settings.template.js src/config/settings.js | true",
     "client": "cd client && npm start",
     "server": "cd server && npm run start-dev",
-    "postinstall": "npx playwright-core install chromium"
+     "postinstall": "PLAYWRIGHT_BROWSERS_PATH=$HOME/pw-browsers npx playwright install chromium" // Or similar user-owned path
   },
   "repository": {
     "type": "git",
